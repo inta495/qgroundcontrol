@@ -79,5 +79,12 @@
     "name":             "hobbs",
     "shortDescription": "Hobbs Meter",
     "type":             "string"
+},
+{
+    "name":             "act3",
+    "shortDescription": "Actuator 3",
+    "type":             "double"
+    "decimalPlaces":    1,
+    "units":            "cm"
 }
 ]

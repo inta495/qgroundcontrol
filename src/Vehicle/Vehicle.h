@@ -345,6 +345,7 @@ public:
     Q_PROPERTY(Fact* flightDistance     READ flightDistance     CONSTANT)
     Q_PROPERTY(Fact* distanceToHome     READ distanceToHome     CONSTANT)
     Q_PROPERTY(Fact* hobbs              READ hobbs              CONSTANT)
+    Q_PROPERTY(Fact* act3               READ act3               CONSTANT)
 
     Q_PROPERTY(FactGroup* gps         READ gpsFactGroup         CONSTANT)
     Q_PROPERTY(FactGroup* battery     READ batteryFactGroup     CONSTANT)
@@ -616,6 +617,7 @@ public:
     Fact* flightDistance    (void) { return &_flightDistanceFact; }
     Fact* distanceToHome    (void) { return &_distanceToHomeFact; }
     Fact* hobbs             (void) { return &_hobbsFact; }
+    Fact* act3              (void) { return &_act3Fact; }
 
     FactGroup* gpsFactGroup         (void) { return &_gpsFactGroup; }
     FactGroup* batteryFactGroup     (void) { return &_batteryFactGroup; }
@@ -870,6 +872,7 @@ private:
     void _handleGlobalPositionInt(mavlink_message_t& message);
     void _handleAltitude(mavlink_message_t& message);
     void _handleVfrHud(mavlink_message_t& message);
+    void _handleDebug(mavlink_message_t& message);
     void _handleScaledPressure(mavlink_message_t& message);
     void _handleScaledPressure2(mavlink_message_t& message);
     void _handleScaledPressure3(mavlink_message_t& message);
@@ -1065,6 +1068,7 @@ private:
     Fact _flightTimeFact;
     Fact _distanceToHomeFact;
     Fact _hobbsFact;
+    Fact _act3Fact;
 
     VehicleGPSFactGroup         _gpsFactGroup;
     VehicleBatteryFactGroup     _batteryFactGroup;
@@ -1084,6 +1088,7 @@ private:
     static const char* _flightTimeFactName;
     static const char* _distanceToHomeFactName;
     static const char* _hobbsFactName;
+    static const char* _act3FactName;
 
     static const char* _gpsFactGroupName;
     static const char* _batteryFactGroupName;

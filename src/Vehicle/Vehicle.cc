@@ -60,6 +60,7 @@ const char* Vehicle::_flightDistanceFactName =      "flightDistance";
 const char* Vehicle::_flightTimeFactName =          "flightTime";
 const char* Vehicle::_distanceToHomeFactName =      "distanceToHome";
 const char* Vehicle::_hobbsFactName =               "hobbs";
+const char* Vehicle::_act3FactName =                "act3";
 
 const char* Vehicle::_gpsFactGroupName =        "gps";
 const char* Vehicle::_batteryFactGroupName =    "battery";
@@ -169,6 +170,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _flightTimeFact       (0, _flightTimeFactName,        FactMetaData::valueTypeElapsedTimeInSeconds)
     , _distanceToHomeFact   (0, _distanceToHomeFactName,    FactMetaData::valueTypeDouble)
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
+    , _act3Fact             (0, _act3FactName,              FactMetaData::valueTypeDouble)
     , _gpsFactGroup(this)
     , _batteryFactGroup(this)
     , _windFactGroup(this)
@@ -344,6 +346,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _flightTimeFact       (0, _flightTimeFactName,        FactMetaData::valueTypeElapsedTimeInSeconds)
     , _distanceToHomeFact   (0, _distanceToHomeFactName,    FactMetaData::valueTypeDouble)
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
+    , _act3Fact             (0, _act3FactName,              FactMetaData::valueTypeDouble)
     , _gpsFactGroup(this)
     , _batteryFactGroup(this)
     , _windFactGroup(this)
@@ -405,6 +408,7 @@ void Vehicle::_commonInit(void)
 
     _hobbsFact.setRawValue(QVariant(QString("0000:00:00")));
     _addFact(&_hobbsFact,               _hobbsFactName);
+    _addFact(&_act3Fact,                _act3FactName);
 
     _addFactGroup(&_gpsFactGroup,       _gpsFactGroupName);
     _addFactGroup(&_batteryFactGroup,   _batteryFactGroupName);
@@ -689,6 +693,10 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_WIND:
         _handleWind(message);
         break;
+
+    case MAVLINK_MSG_ID_NAMED_VALUE_FLOAT:
+        _handleDebug(message);
+        break;
     }
 
     // This must be emitted after the vehicle processes the message. This way the vehicle state is up to date when anyone else
@@ -731,6 +739,16 @@ void Vehicle::_handleVfrHud(mavlink_message_t& message)
     _airSpeedFact.setRawValue(qIsNaN(vfrHud.airspeed) ? 0 : vfrHud.airspeed);
     _groundSpeedFact.setRawValue(qIsNaN(vfrHud.groundspeed) ? 0 : vfrHud.groundspeed);
     _climbRateFact.setRawValue(qIsNaN(vfrHud.climb) ? 0 : vfrHud.climb);
+}
+
+void Vehicle::_handleDebug(mavlink_message_t& message)
+{
+    mavlink_named_value_float_t debug;
+    mavlink_msg_named_value_float_decode(&message, &debug);
+    if (strcmp(debug.name,"ACT3"))
+    {
+        _act3Fact.setRawValue(qIsNaN(debug.value) ? 0 : debug.value);
+    }
 }
 
 void Vehicle::_handleGpsRawInt(mavlink_message_t& message)
