@@ -349,19 +349,21 @@ QString SimpleMissionItem::commandName(void) const
 QString SimpleMissionItem::abbreviation() const
 {
     if (homePosition())
-        return QStringLiteral("H");
+        return tr("H");
 
     switch(command()) {
+    case MavlinkQmlSingleton::MAV_CMD_NAV_TAKEOFF:
+        return tr("Takeoff");
+    case MavlinkQmlSingleton::MAV_CMD_NAV_LAND:
+        return tr("Land");
+    case MavlinkQmlSingleton::MAV_CMD_NAV_VTOL_TAKEOFF:
+        return tr("VTOL Takeoff");
+    case MavlinkQmlSingleton::MAV_CMD_NAV_VTOL_LAND:
+        return tr("VTOL Land");
+    case MavlinkQmlSingleton::MAV_CMD_DO_SET_ROI:
+        return tr("ROI");
     default:
         return QString();
-    case MavlinkQmlSingleton::MAV_CMD_NAV_TAKEOFF:
-        return QStringLiteral("Takeoff");
-    case MavlinkQmlSingleton::MAV_CMD_NAV_LAND:
-        return QStringLiteral("Land");
-    case MavlinkQmlSingleton::MAV_CMD_NAV_VTOL_TAKEOFF:
-        return QStringLiteral("VTOL Takeoff");
-    case MavlinkQmlSingleton::MAV_CMD_NAV_VTOL_LAND:
-        return QStringLiteral("VTOL Land");
     }
 }
 
@@ -755,13 +757,11 @@ void SimpleMissionItem::_updateOptionalSections(void)
     connect(_cameraSection, &CameraSection::dirtyChanged,               this, &SimpleMissionItem::_sectionDirtyChanged);
     connect(_cameraSection, &CameraSection::itemCountChanged,           this, &SimpleMissionItem::_updateLastSequenceNumber);
     connect(_cameraSection, &CameraSection::availableChanged,           this, &SimpleMissionItem::specifiedGimbalYawChanged);
-    connect(_cameraSection, &CameraSection::specifyGimbalChanged,       this, &SimpleMissionItem::specifiedGimbalYawChanged);
     connect(_cameraSection, &CameraSection::specifiedGimbalYawChanged,  this, &SimpleMissionItem::specifiedGimbalYawChanged);
 
-    connect(_speedSection,                  &SpeedSection::dirtyChanged,                this, &SimpleMissionItem::_sectionDirtyChanged);
-    connect(_speedSection,                  &SpeedSection::itemCountChanged,            this, &SimpleMissionItem::_updateLastSequenceNumber);
-    connect(_speedSection,                  &SpeedSection::specifyFlightSpeedChanged,   this, &SimpleMissionItem::specifiedFlightSpeedChanged);
-    connect(_speedSection->flightSpeed(),   &Fact::rawValueChanged,                     this, &SimpleMissionItem::specifiedFlightSpeedChanged);
+    connect(_speedSection,  &SpeedSection::dirtyChanged,                this, &SimpleMissionItem::_sectionDirtyChanged);
+    connect(_speedSection,  &SpeedSection::itemCountChanged,            this, &SimpleMissionItem::_updateLastSequenceNumber);
+    connect(_speedSection,  &SpeedSection::specifiedFlightSpeedChanged, this, &SimpleMissionItem::specifiedFlightSpeedChanged);
 
     emit cameraSectionChanged(_cameraSection);
     emit speedSectionChanged(_speedSection);

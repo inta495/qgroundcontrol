@@ -116,6 +116,38 @@ ArduSubFirmwarePlugin::ArduSubFirmwarePlugin(void):
     _nameToFactGroupMap.insert("APMSubInfo", &_infoFactGroup);
 }
 
+QList<MAV_CMD> ArduSubFirmwarePlugin::supportedMissionCommands(void)
+{
+    QList<MAV_CMD> list;
+
+    list << MAV_CMD_NAV_WAYPOINT
+         << MAV_CMD_NAV_RETURN_TO_LAUNCH
+         << MAV_CMD_NAV_LAND
+         << MAV_CMD_NAV_CONTINUE_AND_CHANGE_ALT
+         << MAV_CMD_NAV_SPLINE_WAYPOINT
+         << MAV_CMD_NAV_GUIDED_ENABLE
+         << MAV_CMD_NAV_DELAY
+         << MAV_CMD_CONDITION_DELAY << MAV_CMD_CONDITION_DISTANCE << MAV_CMD_CONDITION_YAW
+         << MAV_CMD_DO_SET_MODE
+         << MAV_CMD_DO_JUMP
+         << MAV_CMD_DO_CHANGE_SPEED
+         << MAV_CMD_DO_SET_HOME
+         << MAV_CMD_DO_SET_RELAY << MAV_CMD_DO_REPEAT_RELAY
+         << MAV_CMD_DO_SET_SERVO << MAV_CMD_DO_REPEAT_SERVO
+         << MAV_CMD_DO_LAND_START
+         << MAV_CMD_DO_SET_ROI
+         << MAV_CMD_DO_DIGICAM_CONFIGURE << MAV_CMD_DO_DIGICAM_CONTROL
+         << MAV_CMD_DO_MOUNT_CONTROL
+         << MAV_CMD_DO_SET_CAM_TRIGG_DIST
+         << MAV_CMD_DO_FENCE_ENABLE
+         << MAV_CMD_DO_INVERTED_FLIGHT
+         << MAV_CMD_DO_GRIPPER
+         << MAV_CMD_DO_GUIDED_LIMITS
+         << MAV_CMD_DO_AUTOTUNE_ENABLE;
+
+    return list;
+}
+
 int ArduSubFirmwarePlugin::remapParamNameHigestMinorVersionNumber(int majorVersionNumber) const
 {
     // Remapping supports up to 3.5
@@ -130,11 +162,6 @@ int ArduSubFirmwarePlugin::manualControlReservedButtonCount(void)
 bool ArduSubFirmwarePlugin::supportsThrottleModeCenterZero(void)
 {
     return false;
-}
-
-bool ArduSubFirmwarePlugin::supportsManualControl(void)
-{
-    return true;
 }
 
 bool ArduSubFirmwarePlugin::supportsRadio(void)
@@ -230,4 +257,15 @@ APMSubmarineFactGroup::APMSubmarineFactGroup(QObject* parent)
     _lightsLevel1Fact.setRawValue  (std::numeric_limits<float>::quiet_NaN());
     _lightsLevel2Fact.setRawValue  (std::numeric_limits<float>::quiet_NaN());
     _pilotGainFact.setRawValue     (std::numeric_limits<float>::quiet_NaN());
+}
+
+QString ArduSubFirmwarePlugin::vehicleImageOpaque(const Vehicle* vehicle) const
+{
+    Q_UNUSED(vehicle);
+    return QStringLiteral("/qmlimages/subVehicleArrowOpaque.png");
+}
+
+QString ArduSubFirmwarePlugin::vehicleImageOutline(const Vehicle* vehicle) const
+{
+    return vehicleImageOpaque(vehicle);
 }
