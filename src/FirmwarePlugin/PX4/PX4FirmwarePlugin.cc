@@ -38,6 +38,7 @@ PX4FirmwarePlugin::PX4FirmwarePlugin(void)
     , _acroFlightMode(tr("Acro"))
     , _stabilizedFlightMode(tr("Stabilized"))
     , _rattitudeFlightMode(tr("Rattitude"))
+    , _hummingFlightMode(tr("Humming"))
     , _altCtlFlightMode(tr("Altitude"))
     , _posCtlFlightMode(tr("Position"))
     , _offboardFlightMode(tr("Offboard"))
@@ -74,6 +75,7 @@ PX4FirmwarePlugin::PX4FirmwarePlugin(void)
         { PX4_CUSTOM_MAIN_MODE_RATTITUDE,   0,                                      true,   true,   true },
         { PX4_CUSTOM_MAIN_MODE_ALTCTL,      0,                                      true,   true,   true },
         { PX4_CUSTOM_MAIN_MODE_POSCTL,      0,                                      true,   true,   true },
+        { PX4_CUSTOM_MAIN_MODE_HUMMING,     0,                                      false,  false,   true },
         // simple can't be set by the user right now
         { PX4_CUSTOM_MAIN_MODE_SIMPLE,      0,                                      false,   false,  true },
         { PX4_CUSTOM_MAIN_MODE_AUTO,        PX4_CUSTOM_SUB_MODE_AUTO_LOITER,        true,   true,   true },
@@ -96,6 +98,7 @@ PX4FirmwarePlugin::PX4FirmwarePlugin(void)
         &_rattitudeFlightMode,
         &_altCtlFlightMode,
         &_posCtlFlightMode,
+        &_hummingFlightMode,
         &_simpleFlightMode,
         &_holdFlightMode,
         &_missionFlightMode,

@@ -89,6 +89,7 @@ protected:
     QString _rattitudeFlightMode;
     QString _altCtlFlightMode;
     QString _posCtlFlightMode;
+    QString _hummingFlightMode;
     QString _offboardFlightMode;
     QString _readyFlightMode;
     QString _takeoffFlightMode;

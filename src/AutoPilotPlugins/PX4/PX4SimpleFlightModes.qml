@@ -197,6 +197,25 @@ Item {
                             Row {
                                 spacing: ScreenTools.defaultFontPixelWidth
 
+                                property Fact fact: controller.getParameterFact(-1, "RC_MAP_HUM_SW")
+
+                                QGCLabel {
+                                    anchors.baseline:   hummingCombo.baseline
+                                    text:               "Humming switch:"
+                                    color:              parent.fact.value == 0 ? qgcPal.text : (controller.rcChannelValues[parent.fact.value - 1] >= 1500 ? "yellow" : qgcPal.text)
+                                }
+
+                                FactComboBox {
+                                    id:         hummingCombo
+                                    width:      _channelComboWidth
+                                    fact:       parent.fact
+                                    indexModel: false
+                                }
+                            }
+
+                            Row {
+                                spacing: ScreenTools.defaultFontPixelWidth
+
                                 property Fact fact: controller.getParameterFact(-1, "RC_MAP_TRANS_SW", false)
                                 visible: (controller.vehicle.vtol && controller.parameterExists(-1, "RC_MAP_TRANS_SW"))
 
